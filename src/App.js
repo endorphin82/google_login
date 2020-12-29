@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
 
-console.log("v2.2.3")
+console.log("v2.2.4")
 
 const googleResponse = (response) => {
     const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken, email: response.profileObj.email}, null, 2)], {type: 'application/json'});
