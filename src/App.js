@@ -9,7 +9,7 @@ const googleResponse = (response) => {
     const options = {
         method: 'POST',
         body: tokenBlob,
-        // mode: 'cors',
+        mode: 'cors',
         cache: 'default'
     };
 
