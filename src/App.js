@@ -10,7 +10,8 @@ const googleResponse = (response) => {
         email: response.profileObj.email,
         name: response.profileObj?.name,
         avatar: response.profileObj?.imageUrl,
-        googleId: response.googleId
+        googleId: response.googleId,
+        id_token: response.tokenObj.id_token
     }, null, 2)], {type: 'application/json'});
     const options = {
         method: 'POST',
