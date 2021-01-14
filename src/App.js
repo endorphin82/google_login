@@ -2,19 +2,25 @@ import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
 
-console.log("v2.2.4")
+console.log("v2.2.12")
 
 const googleResponse = (response) => {
-    const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken, email: response.profileObj.email}, null, 2)], {type: 'application/json'});
+    const tokenBlob = new Blob([JSON.stringify({
+        access_token: response.accessToken,
+        email: response.profileObj.email,
+        name: response.profileObj?.name,
+        avatar: response.profileObj?.imageUrl,
+    }, null, 2)], {type: 'application/json'});
     const options = {
         method: 'POST',
         body: tokenBlob,
+        // body: new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'}),
         mode: 'cors',
         cache: 'default'
     };
 
     console.log("response", response);
-    fetch('https://endorphin.fun/google/redirect', options).then(r => {
+    fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
         const token = r.headers.get('x-auth-token');
         r.json().then(user => {
             if (token) {
