@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
 
-console.log("v2.2.12")
+console.log("v2.2.13")
 
 const googleResponse = (response) => {
     const tokenBlob = new Blob([JSON.stringify({
@@ -10,6 +10,7 @@ const googleResponse = (response) => {
         email: response.profileObj.email,
         name: response.profileObj?.name,
         avatar: response.profileObj?.imageUrl,
+        googleId: response.googleId
     }, null, 2)], {type: 'application/json'});
     const options = {
         method: 'POST',
