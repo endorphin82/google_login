@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
+import axios from "axios";
 
-console.log("v2.2.13")
+console.log("v2.2.17")
 
 const googleResponse = (response) => {
     const tokenBlob = new Blob([JSON.stringify({
@@ -22,7 +23,17 @@ const googleResponse = (response) => {
     };
 
     console.log("response", response);
-    fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
+    // fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
+    //     const token = r.headers.get('x-auth-token');
+    //     r.json().then(user => {
+    //         if (token) {
+    //             this.setState({isAuthenticated: true, user, token})
+    //         }
+    //     });
+    // })
+
+    axios
+        .get('https://endorphin.fun/auth/google/callback', options).then(r => {
         const token = r.headers.get('x-auth-token');
         r.json().then(user => {
             if (token) {
