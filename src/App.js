@@ -2,11 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
 import axios from "axios";
-import * as querystring from "querystring";
-import * as url from "url";
+// import * as querystring from "querystring";
+// import * as url from "url";
+import {stringify} from "qs";
 
 
-console.log("v2.2.42")
+console.log("v2.2.44")
 
 const googleResponse = (response) => {
     // const tokenBlob = new Blob([JSON.stringify({
@@ -62,17 +63,21 @@ const googleResponse = (response) => {
     //             }
     //         });
     //     })
-    const params = new url.URLSearchParams({
-        serviceId: response.accessToken,
-        service: response.tokenObj.id_token
-    });
+    // const params = new url.URLSearchParams({
+    //     serviceId: response.accessToken,
+    //     service: response.tokenObj.id_token
+    // });
     // querystring.stringify({
     //     serviceId: response.accessToken,
     //     service: response.tokenObj.id_token
     // })
     axios.post('https://endorphin.fun/auth/google/callback',
         // "serviceId=sdfs&service=sdfs"
-        params.toString()
+        // params.toString()
+        stringify({
+            serviceId: response.accessToken,
+            service: response.tokenObj.id_token
+        })
     ).then(r => {
         console.log(r);
         // const token = r.headers.get('x-auth-token');
