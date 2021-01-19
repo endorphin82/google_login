@@ -3,7 +3,7 @@ import './App.css';
 import {GoogleLogin} from "react-google-login";
 import axios from "axios";
 
-console.log("v2.2.17")
+console.log("v2.2.29")
 
 const googleResponse = (response) => {
     const tokenBlob = new Blob([JSON.stringify({
@@ -14,16 +14,24 @@ const googleResponse = (response) => {
         googleId: response.googleId,
         id_token: response.tokenObj.id_token
     }, null, 2)], {type: 'application/json'});
+    // const options = {
+    //     method: 'POST',
+    //     body: tokenBlob,
+    //     // body: new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'}),
+    //     mode: 'cors',
+    //     cache: 'default'
+    // };
     const options = {
         method: 'POST',
+        url: 'https://endorphin.fun/auth/google/callback',
         body: tokenBlob,
         // body: new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'}),
         mode: 'cors',
         cache: 'default'
     };
-
     console.log("response", response);
     // fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
+    // // fetch('https://endorphin.fun/google/redirect', options).then(r => {
     //     const token = r.headers.get('x-auth-token');
     //     r.json().then(user => {
     //         if (token) {
@@ -32,8 +40,8 @@ const googleResponse = (response) => {
     //     });
     // })
 
-    axios
-        .get('https://endorphin.fun/auth/google/callback', options).then(r => {
+    axios(options).then(r => {
+        // .get('https://endorphin.fun/google/redirect', options).then(r => {
         const token = r.headers.get('x-auth-token');
         r.json().then(user => {
             if (token) {
