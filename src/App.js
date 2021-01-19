@@ -2,25 +2,35 @@ import logo from './logo.svg';
 import './App.css';
 import {GoogleLogin} from "react-google-login";
 import axios from "axios";
+import * as querystring from "querystring";
+import * as url from "url";
 
-console.log("v2.2.35")
+
+console.log("v2.2.42")
 
 const googleResponse = (response) => {
-    const tokenBlob = new Blob([JSON.stringify({
-        access_token: response.accessToken,
-        email: response.profileObj.email,
-        name: response.profileObj?.name,
-        avatar: response.profileObj?.imageUrl,
-        googleId: response.googleId,
-        id_token: response.tokenObj.id_token
-    }, null, 2)], {type: 'application/json'});
-    const options = {
-        method: 'POST',
-        body: tokenBlob,
-        // body: new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'}),
-        mode: 'no-cors',
-        cache: 'default'
-    };
+    // const tokenBlob = new Blob([JSON.stringify({
+    //     access_token: response.accessToken,
+    //     email: response.profileObj.email,
+    //     name: response.profileObj?.name,
+    //     avatar: response.profileObj?.imageUrl,
+    //     googleId: response.googleId,
+    //     id_token: response.tokenObj.id_token
+    // }, null, 2)], {type: 'application/json'});
+
+    // const tokenBlob = new Blob([JSON.stringify({
+    //     serviceId: response.accessToken,
+    //     service: response.tokenObj.id_token
+    // }, null, 2)], {type: 'application/json'});
+
+    // const options = {
+    //     method: 'POST',
+    //     body: tokenBlob,
+    //     // body: new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'}),
+    //     mode: 'no-cors',
+    //     cache: 'default'
+    // };
+
     // const options = {
     //     headers: {'Access-Control-Allow-Origin': '*'},
     //     method: 'POST',
@@ -30,19 +40,10 @@ const googleResponse = (response) => {
     //     mode: 'cors',
     //     cache: 'default'
     // };
-    console.log("response", response);
-    fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
-    // fetch('https://endorphin.fun/google/redirect', options).then(r => {
-        const token = r.headers.get('x-auth-token');
-        r.json().then(user => {
-            if (token) {
-                this.setState({isAuthenticated: true, user, token})
-            }
-        });
-    })
 
-    // axios(options).then(r => {
-    //     // .get('https://endorphin.fun/google/redirect', options).then(r => {
+    console.log("response", response);
+    // fetch('https://endorphin.fun/auth/google/callback', options).then(r => {
+    // // fetch('https://endorphin.fun/google/redirect', options).then(r => {
     //     const token = r.headers.get('x-auth-token');
     //     r.json().then(user => {
     //         if (token) {
@@ -50,6 +51,38 @@ const googleResponse = (response) => {
     //         }
     //     });
     // })
+
+    // axios(options)
+    //     .then(r => {
+    //         // .get('https://endorphin.fun/google/redirect', options).then(r => {
+    //         const token = r.headers.get('x-auth-token');
+    //         r.json().then(user => {
+    //             if (token) {
+    //                 this.setState({isAuthenticated: true, user, token})
+    //             }
+    //         });
+    //     })
+    const params = new url.URLSearchParams({
+        serviceId: response.accessToken,
+        service: response.tokenObj.id_token
+    });
+    // querystring.stringify({
+    //     serviceId: response.accessToken,
+    //     service: response.tokenObj.id_token
+    // })
+    axios.post('https://endorphin.fun/auth/google/callback',
+        // "serviceId=sdfs&service=sdfs"
+        params.toString()
+    ).then(r => {
+        console.log(r);
+        // const token = r.headers.get('x-auth-token');
+        // r.json().then(user => {
+        //     if (token) {
+        //         this.setState({isAuthenticated: true, user, token})
+        //     }
+        // });
+    })
+
 };
 
 function App() {
